@@ -617,21 +617,21 @@ export class ApiClient {
 
   // Auth endpoints
   async login(credentials: LoginRequest): Promise<ApiResponse<AuthResponse>> {
-    return this.request<AuthResponse>('/auth/login', {
+    return this.request<AuthResponse>('/api/Auth/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
     });
   }
 
   async register(data: RegisterRequest): Promise<ApiResponse<AuthResponse>> {
-    return this.request<AuthResponse>('/auth/register', {
+    return this.request<AuthResponse>('/api/Auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async changePassword(data: { currentPassword: string; newPassword: string; confirmPassword: string }): Promise<ApiResponse<void>> {
-    return this.request<void>('/auth/change-password', {
+    return this.request<void>('/api/Auth/change-password', {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -642,7 +642,7 @@ export class ApiClient {
    */
   async refreshToken(refreshToken: string): Promise<AuthResponse> {
     try {
-      const response = await fetch(`${this.baseURL}/auth/refresh`, {
+      const response = await fetch(`${this.baseURL}/api/Auth/refresh`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -664,7 +664,7 @@ export class ApiClient {
   }
 
   async forgotPassword(data: ForgotPasswordRequest): Promise<ApiResponse<void>> {
-    return this.request<void>('/auth/forgot-password', {
+    return this.request<void>('/api/Auth/forgot-password', {
       method: 'POST',
       body: JSON.stringify(data.email),
       headers: {
@@ -679,7 +679,7 @@ export class ApiClient {
       token: data.token,
       newPassword: data.newPassword
     };
-    return this.request<void>('/auth/reset-password', {
+    return this.request<void>('/api/Auth/reset-password', {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -689,7 +689,7 @@ export class ApiClient {
   }
 
   async confirmEmail(userId: string, token: string): Promise<ApiResponse<void>> {
-    return this.request<void>('/auth/confirm-email', {
+    return this.request<void>('/api/Auth/confirm-email', {
       method: 'POST',
       body: JSON.stringify({ userId, token }),
     });
@@ -697,29 +697,29 @@ export class ApiClient {
 
   // User endpoints
   async getUserProfile(): Promise<ApiResponse<User>> {
-    return this.request<User>('/users/profile');
+    return this.request<User>('/api/Users/profile');
   }
 
   async updateUserProfile(data: Partial<User>): Promise<ApiResponse<User>> {
-    return this.request<User>('/users/profile', {
+    return this.request<User>('/api/Users/profile', {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async updateTheme(theme: 'light' | 'dark' | 'system'): Promise<ApiResponse<void>> {
-    return this.request<void>('/users/theme', {
+    return this.request<void>('/api/Users/theme', {
       method: 'PUT',
       body: JSON.stringify({ theme }),
     });
   }
 
   async checkEmailExists(email: string): Promise<ApiResponse<boolean>> {
-    return this.request<boolean>(`/users/check-email?email=${encodeURIComponent(email)}`);
+    return this.request<boolean>(`/api/Users/check-email?email=${encodeURIComponent(email)}`);
   }
 
   async checkUsernameExists(userName: string): Promise<ApiResponse<boolean>> {
-    return this.request<boolean>(`/users/check-username?userName=${encodeURIComponent(userName)}`);
+    return this.request<boolean>(`/api/Users/check-username?userName=${encodeURIComponent(userName)}`);
   }
 
   // Admin User Management endpoints
@@ -728,50 +728,50 @@ export class ApiClient {
       page: page.toString(),
       pageSize: pageSize.toString(),
     });
-    return this.request<PaginatedResponse<User>>(`/users?${params}`);
+    return this.request<PaginatedResponse<User>>(`/api/Users?${params}`);
   }
 
   async getUserById(id: string): Promise<ApiResponse<User>> {
-    return this.request<User>(`/users/${id}`);
+    return this.request<User>(`/api/Users/${id}`);
   }
 
   async getUsersByRole(role: UserRole): Promise<ApiResponse<User[]>> {
-    return this.request<User[]>(`/users/by-role/${role}`);
+    return this.request<User[]>(`/api/Users/by-role/${role}`);
   }
 
   async updateUser(id: string, data: Partial<User>): Promise<ApiResponse<User>> {
-    return this.request<User>(`/users/${id}`, {
+    return this.request<User>(`/api/Users/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteUser(id: string): Promise<ApiResponse<void>> {
-    return this.request<void>(`/users/${id}`, {
+    return this.request<void>(`/api/Users/${id}`, {
       method: 'DELETE',
     });
   }
 
   async getUserStatus(id: string): Promise<ApiResponse<any>> {
-    return this.request<any>(`/users/${id}/status`);
+    return this.request<any>(`/api/Users/${id}/status`);
   }
 
   async updateUserStatus(id: string, status: any): Promise<ApiResponse<any>> {
-    return this.request<any>(`/users/${id}/status`, {
+    return this.request<any>(`/api/Users/${id}/status`, {
       method: 'PUT',
       body: JSON.stringify(status),
     });
   }
 
   async searchUsers(searchDto: any): Promise<ApiResponse<PaginatedResponse<User>>> {
-    return this.request<PaginatedResponse<User>>('/users/search', {
+    return this.request<PaginatedResponse<User>>('/api/Users/search', {
       method: 'POST',
       body: JSON.stringify(searchDto),
     });
   }
 
   async getUserStatistics(): Promise<ApiResponse<any>> {
-    return this.request<any>('/users/statistics');
+    return this.request<any>('/api/Users/statistics');
   }
 
   async getUserActivity(page: number = 1, pageSize: number = 10): Promise<ApiResponse<any[]>> {
@@ -779,11 +779,11 @@ export class ApiClient {
       page: page.toString(),
       pageSize: pageSize.toString(),
     });
-    return this.request<any[]>(`/users/activity?${params}`);
+    return this.request<any[]>(`/api/Users/activity?${params}`);
   }
 
   async bulkUserOperation(operation: BulkUserOperationRequest): Promise<ApiResponse<void>> {
-    return this.request<void>('/users/bulk-operation', {
+    return this.request<void>('/api/Users/bulk-operation', {
       method: 'POST',
       body: JSON.stringify(operation),
     });
@@ -791,31 +791,31 @@ export class ApiClient {
 
   async lockUser(id: string, lockoutEnd?: string): Promise<ApiResponse<void>> {
     const params = lockoutEnd ? `?lockoutEnd=${lockoutEnd}` : '';
-    return this.request<void>(`/users/${id}/lock${params}`, {
+    return this.request<void>(`/api/Users/${id}/lock${params}`, {
       method: 'POST',
     });
   }
 
   async unlockUser(id: string): Promise<ApiResponse<void>> {
-    return this.request<void>(`/users/${id}/unlock`, {
+    return this.request<void>(`/api/Users/${id}/unlock`, {
       method: 'POST',
     });
   }
 
   async activateUser(id: string): Promise<ApiResponse<void>> {
-    return this.request<void>(`/users/${id}/activate`, {
+    return this.request<void>(`/api/Users/${id}/activate`, {
       method: 'POST',
     });
   }
 
   async deactivateUser(id: string): Promise<ApiResponse<void>> {
-    return this.request<void>(`/users/${id}/deactivate`, {
+    return this.request<void>(`/api/Users/${id}/deactivate`, {
       method: 'POST',
     });
   }
 
   async resetUserLoginAttempts(id: string): Promise<ApiResponse<void>> {
-    return this.request<void>(`/users/${id}/reset-login-attempts`, {
+    return this.request<void>(`/api/Users/${id}/reset-login-attempts`, {
       method: 'POST',
     });
   }
@@ -828,36 +828,36 @@ export class ApiClient {
     });
     if (search) params.append('search', search);
 
-    return this.request<PaginatedResponse<Site>>(`/sites?${params}`);
+    return this.request<PaginatedResponse<Site>>(`/api/Sites?${params}`);
   }
 
   async searchSites(filters: any): Promise<ApiResponse<PaginatedResponse<Site>>> {
-    return this.request<PaginatedResponse<Site>>('/sites/search', {
+    return this.request<PaginatedResponse<Site>>('/api/Sites/search', {
       method: 'POST',
       body: JSON.stringify(filters),
     });
   }
 
   async getSiteById(id: number): Promise<ApiResponse<Site>> {
-    return this.request<Site>(`/sites/${id}`);
+    return this.request<Site>(`/api/Sites/${id}`);
   }
 
   async createSite(data: CreateSiteRequest): Promise<ApiResponse<Site>> {
-    return this.request<Site>('/sites', {
+    return this.request<Site>('/api/Sites', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async updateSite(id: number, data: Partial<CreateSiteRequest>): Promise<ApiResponse<Site>> {
-    return this.request<Site>(`/sites/${id}`, {
+    return this.request<Site>(`/api/Sites/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteSite(id: number): Promise<ApiResponse<void>> {
-    return this.request<void>(`/sites/${id}`, {
+    return this.request<void>(`/api/Sites/${id}`, {
       method: 'DELETE',
     });
   }
@@ -869,26 +869,26 @@ export class ApiClient {
       pageSize: pageSize.toString(),
     });
 
-    return this.request<PaginatedResponse<Visit>>(`/visits?${params}`);
+    return this.request<PaginatedResponse<Visit>>(`/api/Visits?${params}`);
   }
 
   async searchVisits(searchDto: VisitSearchRequest): Promise<ApiResponse<PaginatedResponse<Visit>>> {
-    return this.request<PaginatedResponse<Visit>>('/visits/search', {
+    return this.request<PaginatedResponse<Visit>>('/api/Visits/search', {
       method: 'POST',
       body: JSON.stringify(searchDto),
     });
   }
 
   async getMyVisits(): Promise<ApiResponse<Visit[]>> {
-    return this.request<Visit[]>('/visits/my-visits');
+    return this.request<Visit[]>('/api/Visits/my-visits');
   }
 
   async getVisitById(id: number): Promise<ApiResponse<Visit>> {
-    return this.request<Visit>(`/visits/${id}`);
+    return this.request<Visit>(`/api/Visits/${id}`);
   }
 
   async createVisit(data: CreateVisitRequest): Promise<ApiResponse<Visit>> {
-    return this.request<Visit>('/visits', {
+    return this.request<Visit>('/api/Visits', {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -900,114 +900,114 @@ export class ApiClient {
       adminComments,
       rejectionReason,
     };
-    return this.request<Visit>(`/visits/${id}/status`, {
+    return this.request<Visit>(`/api/Visits/${id}/status`, {
       method: 'PUT',
       body: JSON.stringify(updateDto),
     });
   }
 
   async deleteVisit(id: number): Promise<ApiResponse<void>> {
-    return this.request<void>(`/visits/${id}`, {
+    return this.request<void>(`/api/Visits/${id}`, {
       method: 'DELETE',
     });
   }
 
   // Orama endpoints
   async getOramaGroups(): Promise<ApiResponse<OramaGroup[]>> {
-    return this.request<OramaGroup[]>('/orama/groups');
+    return this.request<OramaGroup[]>('/api/Orama/groups');
   }
 
   async getOramaItems(): Promise<ApiResponse<OramaItem[]>> {
-    return this.request<OramaItem[]>('/orama/items');
+    return this.request<OramaItem[]>('/api/Orama/items');
   }
 
   async getOramaItemsByGroup(groupId: number): Promise<ApiResponse<OramaItem[]>> {
-    return this.request<OramaItem[]>(`/orama/groups/${groupId}/items`);
+    return this.request<OramaItem[]>(`/api/Orama/groups/${groupId}/items`);
   }
 
   async getOramaGroupById(id: number): Promise<ApiResponse<OramaGroup>> {
-    return this.request<OramaGroup>(`/orama/groups/${id}`);
+    return this.request<OramaGroup>(`/api/Orama/groups/${id}`);
   }
 
   async getOramaItemById(id: number): Promise<ApiResponse<OramaItem>> {
-    return this.request<OramaItem>(`/orama/items/${id}`);
+    return this.request<OramaItem>(`/api/Orama/items/${id}`);
   }
 
   async createOramaGroup(name: string): Promise<ApiResponse<OramaGroup>> {
-    return this.request<OramaGroup>('/orama/groups', {
+    return this.request<OramaGroup>('/api/Orama/groups', {
       method: 'POST',
       body: JSON.stringify({ name }),
     });
   }
 
   async createOramaGroupWithDetails(data: CreateOramaGroupRequest): Promise<ApiResponse<OramaGroup>> {
-    return this.request<OramaGroup>('/orama/groups', {
+    return this.request<OramaGroup>('/api/Orama/groups', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async updateOramaGroup(id: number, name: string): Promise<ApiResponse<OramaGroup>> {
-    return this.request<OramaGroup>(`/orama/groups/${id}`, {
+    return this.request<OramaGroup>(`/api/Orama/groups/${id}`, {
       method: 'PUT',
       body: JSON.stringify({ name }),
     });
   }
 
   async updateOramaGroupWithDetails(id: number, data: UpdateOramaGroupRequest): Promise<ApiResponse<OramaGroup>> {
-    return this.request<OramaGroup>(`/orama/groups/${id}`, {
+    return this.request<OramaGroup>(`/api/Orama/groups/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteOramaGroup(id: number): Promise<ApiResponse<void>> {
-    return this.request<void>(`/orama/groups/${id}`, {
+    return this.request<void>(`/api/Orama/groups/${id}`, {
       method: 'DELETE',
     });
   }
 
   async createOramaItem(name: string, groupId: number): Promise<ApiResponse<OramaItem>> {
-    return this.request<OramaItem>('/orama/items', {
+    return this.request<OramaItem>('/api/Orama/items', {
       method: 'POST',
       body: JSON.stringify({ name, groupId }),
     });
   }
 
   async createOramaItemWithDetails(data: CreateOramaItemRequest): Promise<ApiResponse<OramaItem>> {
-    return this.request<OramaItem>('/orama/items', {
+    return this.request<OramaItem>('/api/Orama/items', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async updateOramaItem(id: number, name: string, groupId: number): Promise<ApiResponse<OramaItem>> {
-    return this.request<OramaItem>(`/orama/items/${id}`, {
+    return this.request<OramaItem>(`/api/Orama/items/${id}`, {
       method: 'PUT',
       body: JSON.stringify({ name, groupId }),
     });
   }
 
   async updateOramaItemWithDetails(id: number, data: UpdateOramaItemRequest): Promise<ApiResponse<OramaItem>> {
-    return this.request<OramaItem>(`/orama/items/${id}`, {
+    return this.request<OramaItem>(`/api/Orama/items/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteOramaItem(id: number): Promise<ApiResponse<void>> {
-    return this.request<void>(`/orama/items/${id}`, {
+    return this.request<void>(`/api/Orama/items/${id}`, {
       method: 'DELETE',
     });
   }
 
   // Visit Components endpoints
   async getVisitComponents(visitId: number): Promise<ApiResponse<VisitComponent[]>> {
-    return this.request<VisitComponent[]>(`/visitcomponents/visit/${visitId}`);
+    return this.request<VisitComponent[]>(`/api/VisitComponents/visit/${visitId}`);
   }
 
   async updateVisitComponent(componentId: number, comments: string): Promise<ApiResponse<VisitComponent>> {
-    return this.request<VisitComponent>(`/visitcomponents/${componentId}`, {
+    return this.request<VisitComponent>(`/api/VisitComponents/${componentId}`, {
       method: 'PUT',
       body: JSON.stringify({ comments }),
     });
@@ -1023,7 +1023,7 @@ export class ApiClient {
     formData.append('imageType', imageType);
     formData.append('image', file);
 
-    return fetch(`${this.baseURL}/visitcomponents/upload-image`, {
+    return fetch(`${this.baseURL}/api/VisitComponents/upload-image`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${this.token}`,
@@ -1033,60 +1033,60 @@ export class ApiClient {
   }
 
   async getVisitReport(visitId: number): Promise<ApiResponse<any>> {
-    return this.request<any>(`/visitcomponents/visit/${visitId}/report`);
+    return this.request<any>(`/api/VisitComponents/visit/${visitId}/report`);
   }
 
   async getFinalReport(visitId: number): Promise<ApiResponse<any>> {
-    return this.request<any>(`/visitcomponents/visit/${visitId}/final-report`);
+    return this.request<any>(`/api/VisitComponents/visit/${visitId}/final-report`);
   }
 
   // Dashboard analytics endpoints
   async getDashboardOverview(): Promise<ApiResponse<DashboardOverview>> {
-    return this.request<DashboardOverview>('/dashboard/overview');
+    return this.request<DashboardOverview>('/api/Dashboard/overview');
   }
 
   async getAdminDashboard(): Promise<ApiResponse<AdminDashboard>> {
-    return this.request<AdminDashboard>('/dashboard/admin');
+    return this.request<AdminDashboard>('/api/Dashboard/admin');
   }
 
   async getEngineerDashboard(): Promise<ApiResponse<EngineerDashboard>> {
-    return this.request<EngineerDashboard>('/dashboard/engineer');
+    return this.request<EngineerDashboard>('/api/Dashboard/engineer');
   }
 
   async getDashboardStats(params?: Record<string, any>): Promise<ApiResponse<DashboardStats>> {
     const query = params ? '?' + new URLSearchParams(params).toString() : '';
-    return this.request<DashboardStats>(`/dashboard/stats${query}`);
+    return this.request<DashboardStats>(`/api/Dashboard/stats${query}`);
   }
 
   async getDashboardCharts(params?: Record<string, any>): Promise<ApiResponse<DashboardCharts>> {
     const query = params ? '?' + new URLSearchParams(params).toString() : '';
-    return this.request<DashboardCharts>(`/dashboard/charts${query}`);
+    return this.request<DashboardCharts>(`/api/Dashboard/charts${query}`);
   }
 
   // Admin endpoints
   async getPendingVisits(): Promise<ApiResponse<Visit[]>> {
-    return this.request<Visit[]>('/admin/visits/pending');
+    return this.request<Visit[]>('/api/Admin/visits/pending');
   }
 
   async acceptVisit(visitId: number): Promise<ApiResponse<Visit>> {
-    return this.request<Visit>(`/admin/visits/${visitId}/accept`, {
+    return this.request<Visit>(`/api/Admin/visits/${visitId}/accept`, {
       method: 'PUT',
     });
   }
 
   async rejectVisit(visitId: number): Promise<ApiResponse<Visit>> {
-    return this.request<Visit>(`/admin/visits/${visitId}/reject`, {
+    return this.request<Visit>(`/api/Admin/visits/${visitId}/reject`, {
       method: 'PUT',
     });
   }
 
   // Admin endpoints
   async getAdminDashboardStats(): Promise<ApiResponse<any>> {
-    return this.request<any>('/admin/dashboard/stats');
+    return this.request<any>('/api/Admin/dashboard/stats');
   }
 
   async getRecentVisits(count: number = 10): Promise<ApiResponse<Visit[]>> {
-    return this.request<Visit[]>(`/admin/visits/recent?count=${count}`);
+    return this.request<Visit[]>(`/api/Admin/visits/recent?count=${count}`);
   }
 
   async getVisitsByDateRange(startDate: string, endDate: string): Promise<ApiResponse<Visit[]>> {
@@ -1094,26 +1094,26 @@ export class ApiClient {
       startDate,
       endDate,
     });
-    return this.request<Visit[]>(`/admin/visits/by-date-range?${params}`);
+    return this.request<Visit[]>(`/api/Admin/visits/by-date-range?${params}`);
   }
 
   async getAllOramaGroups(): Promise<ApiResponse<OramaGroup[]>> {
-    return this.request<OramaGroup[]>('/admin/orama/groups');
+    return this.request<OramaGroup[]>('/api/Admin/orama/groups');
   }
 
   async getAllOramaItems(): Promise<ApiResponse<OramaItem[]>> {
-    return this.request<OramaItem[]>('/admin/orama/items');
+    return this.request<OramaItem[]>('/api/Admin/orama/items');
   }
 
   async createOramaGroupAdmin(name: string): Promise<ApiResponse<OramaGroup>> {
-    return this.request<OramaGroup>('/admin/orama/groups', {
+    return this.request<OramaGroup>('/api/Admin/orama/groups', {
       method: 'POST',
       body: JSON.stringify(name),
     });
   }
 
   async createOramaItemAdmin(name: string, groupId: number): Promise<ApiResponse<OramaItem>> {
-    return this.request<OramaItem>('/admin/orama/items', {
+    return this.request<OramaItem>('/api/Admin/orama/items', {
       method: 'POST',
       body: JSON.stringify({ name, groupId }),
     });
@@ -1128,7 +1128,7 @@ export class ApiClient {
       formData.append('componentId', componentId.toString());
     }
 
-    return fetch(`${this.baseURL}/fileupload/visit-image`, {
+    return fetch(`${this.baseURL}/api/FileUpload/visit-image`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${this.token}`,
@@ -1147,7 +1147,7 @@ export class ApiClient {
       formData.append('componentId', componentId.toString());
     }
 
-    return fetch(`${this.baseURL}/fileupload/visit-images`, {
+    return fetch(`${this.baseURL}/FileUpload/visit-images`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${this.token}`,
@@ -1161,7 +1161,7 @@ export class ApiClient {
       fileName,
       visitId: visitId.toString(),
     });
-    return this.request<void>(`/fileupload/visit-image?${params}`, {
+    return this.request<void>(`/Fileupload/visit-image?${params}`, {
       method: 'DELETE',
     });
   }
@@ -1172,28 +1172,28 @@ export class ApiClient {
   }
 
   async getDetailedHealthStatus(): Promise<ApiResponse<DetailedHealthStatus>> {
-    return this.request<DetailedHealthStatus>('/api/Health/detailed');
+    return this.request<DetailedHealthStatus>('/Health/detailed');
   }
 
   // Test and debug endpoints
   async testAdminAccess(): Promise<ApiResponse<string>> {
-    return this.request<string>('/test/admin-only');
+    return this.request<string>('/api/Test/admin-only');
   }
 
   async testEngineerAccess(): Promise<ApiResponse<string>> {
-    return this.request<string>('/test/engineer-only');
+    return this.request<string>('/api/Test/engineer-only');
   }
 
   async testAdminOrEngineerAccess(): Promise<ApiResponse<string>> {
-    return this.request<string>('/test/admin-or-engineer');
+    return this.request<string>('/api/Test/admin-or-engineer');
   }
 
   async getUserInfo(): Promise<ApiResponse<UserInfo>> {
-    return this.request<UserInfo>('/test/user-info');
+    return this.request<UserInfo>('/api/Test/user-info');
   }
 
   async checkVisitOwnership(visitId: number): Promise<ApiResponse<OwnershipCheck>> {
-    return this.request<OwnershipCheck>(`/test/visit-ownership/${visitId}`);
+    return this.request<OwnershipCheck>(`/api/Test/visit-ownership/${visitId}`);
   }
 
   /**
@@ -1201,7 +1201,7 @@ export class ApiClient {
    */
   async logout(refreshToken?: string): Promise<void> {
     try {
-      const response = await fetch(`${this.baseURL}/auth/logout`, {
+      const response = await fetch(`${this.baseURL}/api/Auth/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1222,47 +1222,47 @@ export class ApiClient {
 
   // Enhanced Visit endpoints
   async getVisitDetails(id: number): Promise<ApiResponse<Visit>> {
-    return this.request<Visit>(`/visits/${id}/details`);
+    return this.request<Visit>(`/api/Visits/${id}/details`);
   }
 
   async getVisitsBySite(siteId: number): Promise<ApiResponse<Visit[]>> {
-    return this.request<Visit[]>(`/visits/by-site/${siteId}`);
+    return this.request<Visit[]>(`/api/Visits/by-site/${siteId}`);
   }
 
   async getVisitsByStatus(status: VisitStatus): Promise<ApiResponse<Visit[]>> {
-    return this.request<Visit[]>(`/visits/by-status/${status}`);
+    return this.request<Visit[]>(`/api/Visits/by-status/${status}`);
   }
 
   async startVisit(visitId: number): Promise<ApiResponse<Visit>> {
-    return this.request<Visit>(`/visits/${visitId}/start`, {
+    return this.request<Visit>(`/api/Visits/${visitId}/start`, {
       method: 'PUT',
     });
   }
 
   async completeVisit(visitId: number): Promise<ApiResponse<Visit>> {
-    return this.request<Visit>(`/visits/${visitId}/complete`, {
+    return this.request<Visit>(`/api/Visits/${visitId}/complete`, {
       method: 'PUT',
     });
   }
 
   async getOverdueVisits(): Promise<ApiResponse<Visit[]>> {
-    return this.request<Visit[]>('/visits/overdue');
+    return this.request<Visit[]>('/api/Visits/overdue');
   }
 
   async getScheduledVisits(): Promise<ApiResponse<Visit[]>> {
-    return this.request<Visit[]>('/visits/scheduled');
+    return this.request<Visit[]>('/api/Visits/scheduled');
   }
 
   async getVisitsByPriority(priority: VisitPriority): Promise<ApiResponse<Visit[]>> {
-    return this.request<Visit[]>(`/visits/by-priority/${priority}`);
+    return this.request<Visit[]>(`/api/Visits/by-priority/${priority}`);
   }
 
   async getVisitsByType(type: VisitType): Promise<ApiResponse<Visit[]>> {
-    return this.request<Visit[]>(`/visits/by-type/${type}`);
+    return this.request<Visit[]>(`/api/Visits/by-type/${type}`);
   }
 
   async updateVisit(id: number, data: Partial<CreateVisitRequest>): Promise<ApiResponse<Visit>> {
-    return this.request<Visit>(`/visits/${id}`, {
+    return this.request<Visit>(`/api/Visits/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
@@ -1270,54 +1270,54 @@ export class ApiClient {
 
   // Enhanced Site endpoints
   async getSiteDetails(id: number): Promise<ApiResponse<SiteDetail>> {
-    return this.request<SiteDetail>(`/sites/${id}/details`);
+    return this.request<SiteDetail>(`/api/Sites/${id}/details`);
   }
 
   async checkSiteCodeExists(code: string): Promise<ApiResponse<boolean>> {
-    return this.request<boolean>(`/sites/code-exists/${code}`);
+    return this.request<boolean>(`/api/Sites/code-exists/${code}`);
   }
 
   async getSitesByLocation(location: string): Promise<ApiResponse<Site[]>> {
-    return this.request<Site[]>(`/sites/by-location/${encodeURIComponent(location)}`);
+    return this.request<Site[]>(`/api/Sites/by-location/${encodeURIComponent(location)}`);
   }
 
   async updateSiteStatus(id: number, status: SiteStatus): Promise<ApiResponse<Site>> {
-    return this.request<Site>(`/sites/${id}/status`, {
+    return this.request<Site>(`/api/Sites/${id}/status`, {
       method: 'PUT',
       body: JSON.stringify({ status }),
     });
   }
 
   async getSiteStatistics(): Promise<ApiResponse<any>> {
-    return this.request<any>('/sites/statistics');
+    return this.request<any>('/api/Sites/statistics');
   }
 
   async getSitesByStatus(status: SiteStatus): Promise<ApiResponse<Site[]>> {
-    return this.request<Site[]>(`/sites/by-status/${status}`);
+    return this.request<Site[]>(`/api/Sites/by-status/${status}`);
   }
 
   async checkSiteAccessibility(id: number): Promise<ApiResponse<any>> {
-    return this.request<any>(`/sites/${id}/accessible`);
+    return this.request<any>(`/api/Sites/${id}/accessible`);
   }
 
   async getMaintenanceSites(): Promise<ApiResponse<Site[]>> {
-    return this.request<Site[]>('/sites/maintenance');
+    return this.request<Site[]>('/api/Sites/maintenance');
   }
 
   async bulkUpdateSiteStatus(siteIds: number[], status: SiteStatus): Promise<ApiResponse<void>> {
-    return this.request<void>('/sites/bulk-status', {
+    return this.request<void>('/api/Sites/bulk-status', {
       method: 'PUT',
       body: JSON.stringify({ siteIds, status }),
     });
   }
 
   async getAdminSites(): Promise<ApiResponse<Site[]>> {
-    return this.request<Site[]>('/sites/admin');
+    return this.request<Site[]>('/api/Sites/admin');
   }
 
   // Enhanced User Management endpoints
   async updateUserTheme(theme: 'light' | 'dark' | 'system'): Promise<ApiResponse<void>> {
-    return this.request<void>('/users/theme', {
+    return this.request<void>('/api/Users/theme', {
       method: 'PUT',
       body: JSON.stringify({ theme }),
     });
