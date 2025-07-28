@@ -1172,7 +1172,7 @@ export class ApiClient {
   }
 
   async getDetailedHealthStatus(): Promise<ApiResponse<DetailedHealthStatus>> {
-    return this.request<DetailedHealthStatus>('/Health/detailed');
+    return this.request<DetailedHealthStatus>('/api/Health/detailed');
   }
 
   // Test and debug endpoints
