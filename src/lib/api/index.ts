@@ -1168,11 +1168,11 @@ export class ApiClient {
 
   // Health monitoring endpoints
   async getHealthStatus(): Promise<ApiResponse<HealthStatus>> {
-    return this.request<HealthStatus>('/health');
+    return this.request<HealthStatus>('/api/health');
   }
 
   async getDetailedHealthStatus(): Promise<ApiResponse<DetailedHealthStatus>> {
-    return this.request<DetailedHealthStatus>('/health/detailed');
+    return this.request<DetailedHealthStatus>('/api/health/detailed');
   }
 
   // Test and debug endpoints
